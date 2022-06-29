@@ -5,27 +5,27 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
-from .managers import UsuarioManager
+from .managers import UserManager
 
-class Usuario(AbstractBaseUser,PermissionsMixin):
+class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(_('direccion email'), max_length=254, unique=True)
     first_name = models.CharField(_('nombres'), max_length=30, blank=True)
     last_name = models.CharField(_('apellidos'), max_length=30, blank=True)
     is_staff = models.BooleanField(_('es staff'), default=False,
-        help_text=_('Indica si el usuario puede iniciar sesión en admin '))
+        help_text=_('Indica si el user puede iniciar sesión en admin '))
     is_active = models.BooleanField(_('activo'), default=True,
-        help_text=_('Designa si este usuario debe ser tratado como activo'
+        help_text=_('Designa si este user debe ser tratado como activo'
                     'Deseleccione esto en lugar de eliminar cuentas.'))
     date_joined = models.DateTimeField(_('fecha registro'), default=timezone.now)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = UsuarioManager()
+    objects = UserManager()
 
     class Meta:
-        verbose_name = _('usuario')
-        verbose_name_plural = _('usuarios')
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
 
     def get_absolute_url(self):
         return "/users/%s" % urlquote(self.email)

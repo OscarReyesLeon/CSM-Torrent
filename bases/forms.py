@@ -5,30 +5,30 @@ from django.forms import fields
 from django import forms
 from django.forms.widgets import PasswordInput
 
-from .models import Usuario
+from .models import User
 
-class UsuarioCreationForm(UserCreationForm):
+class UserCreationForm(UserCreationForm):
     def __init__(self,*args,**kwargs):
-        super(UsuarioCreationForm,self).__init__(*args,**kwargs)
+        super(UserCreationForm,self).__init__(*args,**kwargs)
 
     class Meta:
-        model = Usuario
+        model = User
         fields = ("email",)
 
 
-class UsuarioChangeForm(UserChangeForm):
+class UserChangeForm(UserChangeForm):
     def __init__(self,*args,**kwargs):
-        super(UsuarioChangeForm,self).__init__(*args,**kwargs)
+        super(UserChangeForm,self).__init__(*args,**kwargs)
 
     class Meta:
-        model = Usuario
+        model = User
         fields = '__all__'
 
 class Userform(forms.ModelForm):
     password = forms.CharField(widget=PasswordInput)
     
     class Meta:
-        model = Usuario
+        model = User
         fields = ['email','first_name','last_name','password']
         widget = {'email': forms.EmailInput,
                    'password': forms.PasswordInput }

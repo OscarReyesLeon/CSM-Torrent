@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 from django.contrib import messages
 
-from .models import Usuario
+from .models import User
 from .forms import Userform
 
 class Home(LoginRequiredMixin,TemplateView):
@@ -23,12 +23,12 @@ class Home(LoginRequiredMixin,TemplateView):
 class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = "bases/users_list.html"
     login_url = 'config:login'
-    model = Usuario
-    permission_required = 'bases:view_usuario'
+    model = User
+    permission_required = 'bases:view_user'
     context_object_name = 'obj'
 
 @login_required(login_url='config:login')
-@permission_required('bases.change_ususario', login_url='config:home')
+@permission_required('bases.change_user', login_url='config:home')
 def user_admin(request,pk=None):
     template_name = "bases/users_add.html"
     context = {}
@@ -39,18 +39,18 @@ def user_admin(request,pk=None):
         if not pk:
             form = Userform(instance = None )
         else:
-            obj = Usuario.objects.filter(id=pk).first()
+            obj = User.objects.filter(id=pk).first()
             form = Userform(instance = obj)
         context["form"] = form
         context["obj"] = obj
 
-        grupos_usuarios = None
+        grupos_users = None
         grupos = None
         if obj:
-            grupos_usuarios = obj.groups.all()
+            grupos_users = obj.groups.all()
             grupos = Group.objects.filter(~Q(id__in=obj.groups.values('id')))
         
-        context["grupos_usuario"]=grupos_usuarios
+        context["grupos_user"]=grupos_users
         context["grupos"]=grupos
     
     if request.method == "POST":
@@ -61,9 +61,9 @@ def user_admin(request,pk=None):
         p = data.get("password")
 
         if pk:
-            obj = Usuario.objects.filter(id=pk).first()
+            obj = User.objects.filter(id=pk).first()
             if not obj:
-                print("Error Usuario No Existe")
+                print("Error User No Existe")
             else:
                 obj.email = e
                 obj.first_name = fn
@@ -71,7 +71,7 @@ def user_admin(request,pk=None):
                 obj.password = make_password(p)
                 obj.save()
         else:
-            obj = Usuario.objects.create_user(
+            obj = User.objects.create_user(
                 email = e,
                 password = p,
                 first_name = fn,
@@ -87,11 +87,11 @@ class UserGroupList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = "bases/users_group_list.html"
     login_url = 'config:login'
     model = Group
-    permission_required = 'bases:view_usuario'
+    permission_required = 'bases:view_user'
     context_object_name = 'obj'
 
 @login_required(login_url='config:login')
-@permission_required('bases.change_usuario', login_url='bases:login')
+@permission_required('bases.change_user', login_url='bases:login')
 def user_groups_admin(request,pk=None):
     template_name = 'bases/users_group_add.html'
     context = {}
@@ -137,7 +137,7 @@ def user_groups_admin(request,pk=None):
 
 
 @login_required(login_url='config:login')
-@permission_required('bases.change_usuario', login_url='bases:login')
+@permission_required('bases.change_user', login_url='bases:login')
 def user_group_delete(request,pk):
     if request.method == "POST":
         grp = Group.objects.filter(id=pk).first()
@@ -152,7 +152,7 @@ def user_group_delete(request,pk):
 
 
 @login_required(login_url='config:login')
-@permission_required('bases.change_usuario', login_url='bases:login')
+@permission_required('bases.change_user', login_url='bases:login')
 def user_group_permission(request,id_grp,id_perm):
     if request.method == "POST":
         grp = Group.objects.filter(id = id_grp).first()
@@ -182,12 +182,12 @@ def user_group_permission(request,id_grp,id_perm):
 
 
 @login_required(login_url='config:login')
-@permission_required('bases.change_usuario', login_url='bases:login')
+@permission_required('bases.change_user', login_url='bases:login')
 def user_group_add(request,id_usr,id_grp):
     if request.method == "POST":
-        usr =Usuario.objects.filter(id=id_usr).first()
+        usr =User.objects.filter(id=id_usr).first()
         if not usr:
-            return HttpResponse("Usuario NO Existe")
+            return HttpResponse("User NO Existe")
         
         accion = request.POST.get("accion")
         grp = Group.objects.filter(id=id_grp).first()

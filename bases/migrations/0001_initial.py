@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Usuario',
+            name='User',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('password', models.CharField(max_length=128, verbose_name='password')),
@@ -23,15 +23,15 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254, unique=True, verbose_name='direccion email')),
                 ('first_name', models.CharField(blank=True, max_length=30, verbose_name='nombres')),
                 ('last_name', models.CharField(blank=True, max_length=30, verbose_name='apellidos')),
-                ('is_staff', models.BooleanField(default=False, help_text='Indica si el usuario puede iniciar sesión en admin ', verbose_name='es staff')),
-                ('is_active', models.BooleanField(default=True, help_text='Designa si este usuario debe ser tratado como activoDeseleccione esto en lugar de eliminar cuentas.', verbose_name='activo')),
+                ('is_staff', models.BooleanField(default=False, help_text='Indica si el user puede iniciar sesión en admin ', verbose_name='es staff')),
+                ('is_active', models.BooleanField(default=True, help_text='Designa si este user debe ser tratado como activoDeseleccione esto en lugar de eliminar cuentas.', verbose_name='activo')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='fecha registro')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
             ],
             options={
-                'verbose_name': 'usuario',
-                'verbose_name_plural': 'usuarios',
+                'verbose_name': 'user',
+                'verbose_name_plural': 'users',
             },
         ),
     ]
