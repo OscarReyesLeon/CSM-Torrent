@@ -1,5 +1,5 @@
 """
-ASGI config for demo project.
+ASGI config for proyecto project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
