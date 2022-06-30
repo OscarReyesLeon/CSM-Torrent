@@ -8,9 +8,9 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
 
 class User(AbstractBaseUser,PermissionsMixin):
-    email = models.EmailField(_('direccion email'), max_length=254, unique=True)
-    first_name = models.CharField(_('nombres'), max_length=30, blank=True)
-    last_name = models.CharField(_('apellidos'), max_length=30, blank=True)
+    email = models.EmailField(_('Email'), max_length=254, unique=True)
+    first_name = models.CharField(_('First Name'), max_length=30, blank=True)
+    last_name = models.CharField(_('Last Name'), max_length=30, blank=True)
     is_staff = models.BooleanField(_('es staff'), default=False,
         help_text=_('Indica si el user puede iniciar sesión en admin '))
     is_active = models.BooleanField(_('activo'), default=True,

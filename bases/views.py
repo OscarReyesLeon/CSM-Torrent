@@ -14,6 +14,7 @@ from django.contrib import messages
 
 from .models import User
 from .forms import Userform
+from django.http import HttpResponse
 
 class Home(LoginRequiredMixin,TemplateView):
     template_name = 'bases/home.html'
@@ -27,8 +28,8 @@ class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'bases:view_user'
     context_object_name = 'obj'
 
-@login_required(login_url='config:login')
-@permission_required('bases.change_user', login_url='config:home')
+"""@login_required(login_url='config:login')
+@permission_required('bases.change_user', login_url='config:home')"""
 def user_admin(request,pk=None):
     template_name = "bases/users_add.html"
     context = {}
@@ -39,8 +40,11 @@ def user_admin(request,pk=None):
         if not pk:
             form = Userform(instance = None )
         else:
-            obj = User.objects.filter(id=pk).first()
-            form = Userform(instance = obj)
+            """obj = User.objects.filter(id=pk).first()
+            form = Userform(instance = obj)"""
+            messages.error(request,"prohibido")
+            return HttpResponse("function disabled")
+
         context["form"] = form
         context["obj"] = obj
 
@@ -61,7 +65,8 @@ def user_admin(request,pk=None):
         p = data.get("password")
 
         if pk:
-            obj = User.objects.filter(id=pk).first()
+            return HttpResponse("Grupo No Existe")
+            """obj = User.objects.filter(id=pk).first()
             if not obj:
                 print("Error User No Existe")
             else:
@@ -69,7 +74,7 @@ def user_admin(request,pk=None):
                 obj.first_name = fn
                 obj.last_name = ln
                 obj.password = make_password(p)
-                obj.save()
+                obj.save()"""
         else:
             obj = User.objects.create_user(
                 email = e,
@@ -77,8 +82,9 @@ def user_admin(request,pk=None):
                 first_name = fn,
                 last_name = ln
             )
-            print(obj.email,obj.password)
-        return redirect('config:users_list')
+            """print(obj.email,obj.password)"""
+            messages.success(request,"You can now use your account.")
+        return redirect('config:home')
     
     return render(request,template_name,context)
 
